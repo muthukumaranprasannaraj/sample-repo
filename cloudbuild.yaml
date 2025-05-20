@@ -1,0 +1,16 @@
+steps:
+  # Step 1: Start Cloud SQL Proxy
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:latest'
+    script: |
+        #!/usr/bin/env bash
+        echo "Hiiiiii...";
+        echo $BRANCH_NAME
+
+        gcloud builds triggers run spacecds-test-trigger2 --branch=${BRANCH_NAME} --region=asia-southeast1
+    
+        
+  
+options:
+  logging: CLOUD_LOGGING_ONLY
+  automapSubstitutions: true
+  dynamicSubstitutions: true
