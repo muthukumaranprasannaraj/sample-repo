@@ -6,9 +6,15 @@ steps:
         echo "Hiiiiii...";
         echo $BRANCH_NAME
 
-        gcloud builds triggers run spacecds-test-trigger2 --branch=${BRANCH_NAME} --region=asia-southeast1
-    
-        
+        if [ "${_ENV}" = "dv" ] || [ "${_ENV}" = "qa" ]; then
+          gcloud builds triggers run spacecds-test-trigger2 --branch=${BRANCH_NAME} --region=asia-southeast1
+        elif [ "${_ENV}" = "pd" ]; then
+          gcloud builds triggers run spacecds-test-trigger2 --tag=${TAG_NAME} --region=asia-southeast1
+        else
+          echo "No such env exist: ${_ENV}"
+        fi
+substitutions:
+  _ENV: "pd" 
   
 options:
   logging: CLOUD_LOGGING_ONLY
